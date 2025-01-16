@@ -82,7 +82,7 @@ module.exports = {
         .catch((err) => res.status(500).json(err));
     },
     removeReaction(req, res) {
-        const { reactionId } = req.body; // Extract reactionId from the request body
+        const { reactionId } = req.params; // Extract reactionId from the URL parameters
         const { thoughtId } = req.params; // Extract thoughtId from the request params
     
         console.log('Received Reaction ID:', reactionId); 
@@ -95,14 +95,14 @@ module.exports = {
     
         Thought.findOneAndUpdate(
             { _id: thoughtId }, 
-            { $pull: { reactions: { reactionId: new mongoose.Types.ObjectId(reactionId) } } }, // Correct usage of new ObjectId
+            { $pull: { reactions: { reactionId: reactionId } } }, // Match the reactionId as a string
             { new: true }
         )
             .then((thought) => {
                 if (!thought) {
                     return res.status(404).json({ message: 'No thought found with this id!' });
                 }
-                res.json(thought);
+                res.json({ message: 'Reaction removed successfully!', thought });
             })
             .catch((err) => {
                 console.error('Error removing reaction:', err);
