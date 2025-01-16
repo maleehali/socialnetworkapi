@@ -1,17 +1,21 @@
 const express = require('express');
-const db = require('./config/connection');
+const db = require('./config/connection'); // MongoDB connection
 const routes = require('./routes');
 
-const app = express();
 const PORT = 3001;
+const app = express();
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(routes);
 
+// Connect to MongoDB and start the server
 db.once('open', () => {
-    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+    console.log('🌟 Successfully connected to MongoDB');
+    app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
 });
 
-app.get('/api', (req, res) => {
-    res.send('Welcome to the Social Network API!');
+// Handle MongoDB connection errors
+db.on('error', (err) => {
+    console.error('❌ MongoDB connection error:', err);
 });
