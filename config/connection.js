@@ -1,10 +1,7 @@
 const mongoose = require('mongoose');
 
 // Connect to MongoDB
-mongoose.connect('mongodb://127.0.0.1:27017/socialNetworkDB', {
-    useNewUrlParser: true, // Use the new URL parser
-    useUnifiedTopology: true, // Use the new server discovery and monitoring engine
-});
+mongoose.connect('mongodb://127.0.0.1:27017/socialNetworkDB');
 
 // Log connection status
 mongoose.connection.once('open', () => {
